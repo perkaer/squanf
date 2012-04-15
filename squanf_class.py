@@ -10,6 +10,7 @@ import numpy as np
 
 # ************ base functions for creating fermion ops
 
+
 def signed_identity(n):
     """
     returns the kronecker product of n signed identity 2 x 2 matrices
@@ -66,3 +67,45 @@ def f_create(n, Ntot):
 
 
 # *********** end of base functions
+
+class squanf(object):
+    """
+    class for creating fermionic second quantization operators
+    """
+
+    def __init__(self, Ne=0, Nh=0, use_spin=False):
+
+        # number of electron single-particle states
+        self.Ne = Ne
+
+        # number of hole single-particle states
+        self.Nh = Nh
+
+        # use spin
+        self.use_spin = use_spin
+
+        # total number of single-particle states
+        if self.use_spin:
+            self.Ntot = 2 * self.Ne + 2 * self.Nh
+        else:
+            self.Ntot = self.Ne + self.Nh
+
+    def _map_idx(self, eh, state, *spin):
+        """
+        maps eh, state, spin to a single number according to the following
+        order in occupation number basis:
+        |n_h0u, n_h0d, n_h1u, n_h1d, .... , n_e0u, n_e0d, n_e1u, n_e1d, ... > =
+        (h0u^+)^n_h0u * (h0d^+)^n_h0d * (h1u^+)^n_h1u * (h1d^+)dn_h1u *
+        .... * (e0u^+)^n_e0u * (e0d^+)^n_e0d * (e1u^+)^n_e1u * (e1d^+)^n_e1d *
+         ... |0>
+        """
+
+        pass
+
+    def create(self, eh, state, *spin):
+        """
+        returns creation operator either electron or hole
+        """
+
+        # call _map_idx to get uber state number and use base fcts
+        pass
