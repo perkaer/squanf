@@ -90,7 +90,7 @@ class squanf(object):
         else:
             self.Ntot = self.Ne + self.Nh
 
-    def _map_idx(self, eh, state, *spin):
+    def _map_idx(self, eh, state, spin=None):
         """
         maps eh, state, spin to a single number according to the following
         order in occupation number basis:
@@ -100,7 +100,30 @@ class squanf(object):
          ... |0>
         """
 
-        pass
+        if ((spin is None and self.use_spin)
+            or (spin is not None and not self.use_spin)):
+            raise ValueError('inconsistent spin var')
+        elif spin is not None:
+            if spin not in ['u', 'd']:
+                raise ValueError('spin should be "u" or "d"')
+
+        if self.use_spin:
+            Nspin = 2
+            if spin == 'u':
+                spin = 0
+            else:
+                spin = 1
+        else:
+            Nspin = 1
+            spin = 0
+
+        if eh == 'h':
+            return spin + Nspin * state
+        elif eh == 'e':
+            h_max_idx = self.use_spin + Nspin * (self.Nh - 1) + 1
+            return h_max_idx + spin + Nspin * state
+        else:
+            raise ValueError('eh argument must be "e" or "h"')
 
     def create(self, eh, state, *spin):
         """
