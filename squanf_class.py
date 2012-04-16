@@ -125,10 +125,30 @@ class squanf(object):
         else:
             raise ValueError('eh argument must be "e" or "h"')
 
-    def create(self, eh, state, *spin):
+    def create(self, eh, state, spin=None):
         """
         returns creation operator either electron or hole
-        """
 
-        # call _map_idx to get uber state number and use base fcts
-        pass
+        input:
+            eh: "h" for hole and "e" for electron
+            state: state index \elem [0; N_eh]
+            spin (dep. on use_spin): "u" for spin up and "d" for spin down
+
+        output:
+            sparse matrix representation of operator
+        """
+        return f_create(self._map_idx(eh, state, spin=spin), self.Ntot)
+
+    def destroy(self, eh, state, spin=None):
+        """
+        returns destruction operator either electron or hole
+
+        input:
+            eh: "h" for hole and "e" for electron
+            state: state index \elem [0; N_eh]
+            spin (dep. on use_spin): "u" for spin up and "d" for spin down
+
+        output:
+            sparse matrix representation of operator
+        """
+        return f_destroy(self._map_idx(eh, state, spin=spin), self.Ntot)
