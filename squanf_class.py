@@ -30,7 +30,7 @@ def unsigned_identity(n):
     """
     returns the kronecker product of n 2 x 2 identity matrices
     """
-    return sp_identity(2 * n)
+    return sp_identity(2 ** n)
 
 
 def f_destroy(n, Ntot):
@@ -152,3 +152,29 @@ class squanf(object):
             sparse matrix representation of operator
         """
         return f_destroy(self._map_idx(eh, state, spin=spin), self.Ntot)
+
+    # short hand methods
+
+    def e(self, state, spin=None):
+        """
+        wrapper for self.destroy assuming electron
+        """
+        return self.destroy('e', state, spin=spin)
+
+    def eD(self, state, spin=None):
+        """
+        wrapper for self.create assuming electron
+        """
+        return self.create('e', state, spin=spin)
+
+    def h(self, state, spin=None):
+        """
+        wrapper for self.destroy assuming hole
+        """
+        return self.destroy('h', state, spin=spin)
+
+    def hD(self, state, spin=None):
+        """
+        wrapper for self.create assuming hole
+        """
+        return self.create('h', state, spin=spin)
