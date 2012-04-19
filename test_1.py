@@ -37,13 +37,13 @@ for state in xrange(eh.Nh):
     for spin in ['u', 'd']:
         print '*' * 10
         print 'h' + str(state) + spin + '->' \
-            + str(eh._map_idx('h', state, spin=spin))
-        print eh.create('h', state, spin=spin).shape
+            + str(eh._map_idx('h', state, spin))
+        print eh.create('h', state, spin).shape
 
 # electrons
 for state in xrange(eh.Ne):
     for spin in ['u', 'd']:
         print '*' * 10
         print 'e' + str(state) + spin + '->' \
-            + str(eh._map_idx('e', state, spin=spin))
-        print eh.create('e', state, spin=spin).shape
+            + str(eh._map_idx('e', state, spin))
+        print eh.create('e', state, spin).shape

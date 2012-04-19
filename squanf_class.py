@@ -90,7 +90,7 @@ class squanf(object):
         else:
             self.Ntot = self.Ne + self.Nh
 
-    def _map_idx(self, eh, state, spin=None):
+    def _map_idx(self, eh, state, *spin):
         """
         maps eh, state, spin to a single number according to the following
         order in occupation number basis:
@@ -100,10 +100,11 @@ class squanf(object):
          ... |0>
         """
 
-        if ((spin is None and self.use_spin)
-            or (spin is not None and not self.use_spin)):
+        if ((spin is () and self.use_spin)
+            or (spin is not () and not self.use_spin)):
             raise ValueError('inconsistent spin var')
-        elif spin is not None:
+        elif spin is not ():
+            spin = spin[0]
             if spin not in ['u', 'd']:
                 raise ValueError('spin should be "u" or "d"')
 
@@ -125,56 +126,56 @@ class squanf(object):
         else:
             raise ValueError('eh argument must be "e" or "h"')
 
-    def create(self, eh, state, spin=None):
+    def create(self, eh, state, *spin):
         """
         returns creation operator either electron or hole
 
         input:
             eh: "h" for hole and "e" for electron
-            state: state index \elem [0; N_eh]
+            state: state index \elem [0; N_eh - 1]
             spin (dep. on use_spin): "u" for spin up and "d" for spin down
 
         output:
             sparse matrix representation of operator
         """
-        return f_create(self._map_idx(eh, state, spin=spin), self.Ntot)
+        return f_create(self._map_idx(eh, state, *spin), self.Ntot)
 
-    def destroy(self, eh, state, spin=None):
+    def destroy(self, eh, state, *spin):
         """
         returns destruction operator either electron or hole
 
         input:
             eh: "h" for hole and "e" for electron
-            state: state index \elem [0; N_eh]
+            state: state index \elem [0; N_eh - 1]
             spin (dep. on use_spin): "u" for spin up and "d" for spin down
 
         output:
             sparse matrix representation of operator
         """
-        return f_destroy(self._map_idx(eh, state, spin=spin), self.Ntot)
+        return f_destroy(self._map_idx(eh, state, *spin), self.Ntot)
 
     # short hand methods
 
-    def e(self, state, spin=None):
+    def e(self, state, *spin):
         """
         wrapper for self.destroy assuming electron
         """
-        return self.destroy('e', state, spin=spin)
+        return self.destroy('e', state, *spin)
 
-    def eD(self, state, spin=None):
+    def eD(self, state, *spin):
         """
         wrapper for self.create assuming electron
         """
-        return self.create('e', state, spin=spin)
+        return self.create('e', state, *spin)
 
-    def h(self, state, spin=None):
+    def h(self, state, *spin):
         """
         wrapper for self.destroy assuming hole
         """
-        return self.destroy('h', state, spin=spin)
+        return self.destroy('h', state, *spin)
 
-    def hD(self, state, spin=None):
+    def hD(self, state, *spin):
         """
         wrapper for self.create assuming hole
         """
-        return self.create('h', state, spin=spin)
+        return self.create('h', state, *spin)
