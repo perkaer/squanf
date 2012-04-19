@@ -27,7 +27,7 @@ V1 = 20.
 V2 = 10.
 
 for spin in ['u', 'd']:
-    H = H + Eex / 2 * eD(0, spin=spin) * e(0, spin=spin)
-    H = H + Eex / 2 * hD(0, spin=spin) * h(0, spin=spin)
+    H = H + Eex / 2 * eD(0, spin) * e(0, spin)
+    H = H + Eex / 2 * hD(0, spin) * h(0, spin)
 
 print H.todense().astype(int)
